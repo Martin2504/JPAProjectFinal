@@ -15,7 +15,7 @@ public interface DeptEmpRepository extends JpaRepository<DeptEmp, DeptEmpId> {
     @Query(value = "SELECT de FROM DeptEmp de WHERE de.id.deptNo = :deptNo AND de.fromDate < :beforeDate AND de.toDate > :endDate")
     List<DeptEmp> getDeptEmpsByDeptNo(@Param("deptNo") String deptNo, LocalDate beforeDate, LocalDate endDate);
 
-    @Query(value = "SELECT Count(de) FROM DeptEmp de WHERE de.id.deptNo = :deptNo AND de.fromDate < :beforeDate AND de.toDate > :endDate")
+    @Query(value = "SELECT Count(de) FROM DeptEmp de WHERE de.id.deptNo = :deptNo AND de.fromDate <= :beforeDate AND de.toDate >= :endDate")
     int getNoOfEmpsByDeptNoWithinTimePeriod(@Param("deptNo") String deptNo, LocalDate beforeDate, LocalDate endDate);
 
 

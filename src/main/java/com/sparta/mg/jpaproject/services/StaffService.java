@@ -34,7 +34,7 @@ public class StaffService {
         this.departmentRepository = departmentRepository;
     }
 
-    public Map<String, Integer> getDeptAndNoOfEmpGivenTimePeriod(LocalDate start_Date, LocalDate end_Date) {
+    private Map<String, Integer> getDeptAndNoOfEmpGivenTimePeriod(LocalDate start_Date, LocalDate end_Date) {
         Map<String, Integer> departmentAndNumbers = new HashMap<>();
         List<Department> departments = departmentRepository.findAll();
         for (Department department: departments) {
@@ -46,8 +46,11 @@ public class StaffService {
         return departmentAndNumbers;
     }
 
-    public Map<String, Integer> getDeptAndNoOfEmpGivenYears(int start_Year, int end_Year) {
-        return getDeptAndNoOfEmpGivenTimePeriod(LocalDate.of(start_Year, 1, 1), LocalDate.of(end_Year, 1, 1));
+    public Map<String, Integer> getDeptAndNoOfEmpGivenYears(int start_Year, int end_Year) throws IllegalArgumentException{
+        if (start_Year > end_Year) {
+            throw new IllegalArgumentException();
+        }
+        return getDeptAndNoOfEmpGivenTimePeriod(LocalDate.of(start_Year, 1, 1), LocalDate.of(end_Year, 12, 31));
     }
 
 
