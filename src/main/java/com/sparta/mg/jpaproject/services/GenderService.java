@@ -4,6 +4,9 @@ import com.sparta.mg.jpaproject.model.repositories.SalaryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
 @Service
 public class GenderService {
     private SalaryRepository salaryRepository;
@@ -18,16 +21,17 @@ public class GenderService {
         if (avgMaleSalary == null || avgFemaleSalary == null) {
             return "Unable to determine if there is a gender pay gap";
         }
-
-        // Calculate the pay gap as a percentage
         double payGap = ((avgMaleSalary - avgFemaleSalary) / avgMaleSalary) * 100.0;
         payGap = Math.round(payGap * 100.0) / 100.0;
-        // Check if the pay gap is greater than 0%
-        if (payGap > 0.0) {
+        // Check if the pay gap is greater than 0
+        if (payGap > 0) {
             return "there is a gender pay gap. Women earn " + payGap + "% less than men.";
-        } else {
+        }else if (payGap < 0) {
+            return "there is a gender pay gap. Women earn " + -payGap + "% more than men.";
+        }else {
             return "there is no gender pay gap.";
         }
+
     }
 
     public String getGenderPayGapByDepartment(String departmentName) {

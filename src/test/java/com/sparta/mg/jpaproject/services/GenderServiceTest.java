@@ -28,7 +28,7 @@ class GenderServiceTest {
         when(salaryRepository.getAverageSalaryByDepartmentAndGender(departmentName, "M")).thenReturn(avgMaleSalary);
         when(salaryRepository.getAverageSalaryByDepartmentAndGender(departmentName, "F")).thenReturn(avgFemaleSalary);
         String result = genderService.getGenderPayGapByDepartment(departmentName);
-        assertEquals("There is a gender pay gap for department " + departmentName + ". Women earn 16.67 % less than men.", result);
+        assertEquals("In department " + departmentName + ", there is a gender pay gap. Women earn 16.67% less than men.", result);
     }
 
     @Test
@@ -39,7 +39,7 @@ class GenderServiceTest {
         when(salaryRepository.getAverageSalaryByDepartmentAndGender(departmentName, "M")).thenReturn(avgMaleSalary);
         when(salaryRepository.getAverageSalaryByDepartmentAndGender(departmentName, "F")).thenReturn(avgFemaleSalary);
         String result = genderService.getGenderPayGapByDepartment(departmentName);
-        assertEquals("There is no gender pay gap in department " + departmentName + ".", result);
+        assertEquals("In department " + departmentName + ", there is no gender pay gap.", result);
     }
 
     @Test
@@ -50,7 +50,7 @@ class GenderServiceTest {
         when(salaryRepository.getAverageSalaryByJobTitleAndGender(jobTitle, "M")).thenReturn(avgMaleSalary);
         when(salaryRepository.getAverageSalaryByJobTitleAndGender(jobTitle, "F")).thenReturn(avgFemaleSalary);
         String result = genderService.getJobTitlePayGap(jobTitle);
-        assertEquals("There is a gender pay gap for job title " + jobTitle + ". Women earn 16.67 % less than men.", result);
+        assertEquals("For job title " + jobTitle + ", there is a gender pay gap. Women earn 16.67% less than men.", result);
     }
 
     @Test
@@ -61,7 +61,7 @@ class GenderServiceTest {
         when(salaryRepository.getAverageSalaryByJobTitleAndGender(jobTitle, "M")).thenReturn(avgMaleSalary);
         when(salaryRepository.getAverageSalaryByJobTitleAndGender(jobTitle, "F")).thenReturn(avgFemaleSalary);
         String result = genderService.getJobTitlePayGap(jobTitle);
-        assertEquals("There is no gender pay gap for job title " + jobTitle + ".", result);
+        assertEquals("For job title " + jobTitle + ", there is no gender pay gap.", result);
     }
 
     @Test
@@ -73,7 +73,7 @@ class GenderServiceTest {
 
         String result = genderService.getCompanyGenderPayGap();
 
-        assertEquals("There is a gender pay gap of 7.69% in the company.", result);
+        assertEquals("In the company as a whole, there is a gender pay gap. Women earn 7.69% less than men.", result);
     }
 
     @Test
@@ -85,14 +85,14 @@ class GenderServiceTest {
 
         String result = genderService.getCompanyGenderPayGap();
 
-        assertEquals("There is no gender pay gap in the company.", result);
+        assertEquals("In the company as a whole, there is no gender pay gap.", result);
     }
 
     @ParameterizedTest
     @CsvSource({
             "Development, 55000.0, 50000.0, In department Development; there is a gender pay gap. Women earn 9.09% less than men.",
             "Finance, 60000.0, 60000.0, In department Finance; there is no gender pay gap.",
-            "Marketing, 50000.0, 55000.0, In department Marketing; women earn 9.09% more than men."
+            "Marketing, 50000.0, 55000.0, In department Marketing; there is a gender pay gap. Women earn 10.0% more than men."
     })
     public void testGetDepartmentPayGap(String departmentName, Double avgMaleSalary, Double avgFemaleSalary, String expected) {
         when(salaryRepository.getAverageSalaryByDepartmentAndGender(departmentName, "M")).thenReturn(avgMaleSalary);
@@ -104,15 +104,16 @@ class GenderServiceTest {
     }
 
     @ParameterizedTest
-    @CsvSource({"Senior Engineer, 80000.0, 60000.0, There is a gender pay gap for job title Senior Engineer. Women earn 25.0% less than men.",
-            "Staff, 50000.0, 50000.0, There is no gender pay gap for job title Staff.",
-            "Senior Staff, 75000.0, 70000.0, There is a gender pay gap for job title Senior Staff. Women earn 6.67% less than men.",
-            "Assistant Engineer, 45000.0, 40000.0, There is a gender pay gap for job title Assistant Engineer. Women earn 12.5% less than men.",
-            "Technique Leader, 90000.0, 80000.0, There is a gender pay gap for job title Technique Leader. Women earn 11.11% less than men."})
+    @CsvSource({"Senior Engineer, 80000.0, 60000.0, For job title Senior Engineer; there is a gender pay gap. Women earn 25.0% less than men.",
+            "Staff, 50000.0, 50000.0, For job title Staff; there is no gender pay gap.",
+            "Senior Staff, 75000.0, 70000.0, For job title Senior Staff; there is a gender pay gap. Women earn 6.67% less than men.",
+            "Assistant Engineer, 45000.0, 40000.0, For job title Assistant Engineer; there is a gender pay gap. Women earn 11.11% less than men.",
+            "Technique Leader, 90000.0, 80000.0, For job title Technique Leader; there is a gender pay gap. Women earn 11.11% less than men."})
     void testGetJobTitlePayGap(String jobTitle, Double avgMaleSalary, Double avgFemaleSalary, String expected) {
         when(salaryRepository.getAverageSalaryByJobTitleAndGender(jobTitle, "M")).thenReturn(avgMaleSalary);
         when(salaryRepository.getAverageSalaryByJobTitleAndGender(jobTitle, "F")).thenReturn(avgFemaleSalary);
         String result = genderService.getJobTitlePayGap(jobTitle);
+        expected =  expected.replace(";", ",");
         assertEquals(expected, result);
     }
 
