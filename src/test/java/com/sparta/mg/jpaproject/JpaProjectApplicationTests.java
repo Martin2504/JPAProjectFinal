@@ -45,5 +45,11 @@ class JpaProjectApplicationTests {
         public void checkEveryDepartmentFound(String departmentName) {
             assertTrue(deptEmpNumberMap.containsKey(departmentName));
         }
+
+        @Test
+        @DisplayName("Testing IllegalArgumentException thrown when dates overlap")
+        void testingExceptionThrownWithOverlappingParameters() {
+            assertThrows(IllegalArgumentException.class, () -> deptEmpNumberMap = staffService.getDeptAndNoOfEmpGivenYears(2001, 2000));
+        }
     }
 }
