@@ -6,6 +6,9 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
+import java.time.LocalDate;
+import java.util.List;
+
 public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
 
     @Query(value = "SELECT * from employees where last_name = :lastName", nativeQuery = true)
