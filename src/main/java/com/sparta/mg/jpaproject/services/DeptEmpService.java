@@ -12,19 +12,24 @@ import java.util.List;
 @Service
 public class DeptEmpService {
     // Maria
+    //user has access to DepartmentEmployee that tracks employee schedules and department assignments
+    //When user selects the desired department and date
+    //Then system should display a list of all employees who worked in the selected department on the specified date
     private DeptEmpRepository deptEmpRepository ;
-    private final EmployeeRepository employeeRepository;
 
 
 
     @Autowired
-    public DeptEmpService(EmployeeRepository employeeRepository) {
-        this.employeeRepository = employeeRepository;
-    }
-    public List<Employee> getDeptEmp (String department , LocalDate date){
-        List<Employee> employee = employeeRepository.findByDeptEmp (department , date);
-        return employee ;
+    public DeptEmpService(DeptEmpRepository deptEmpRepository) {
+        this.deptEmpRepository = deptEmpRepository;
+
     }
 
+    public List<Employee> findEmployeeByDeptEmp(String department , LocalDate date) {
+        if(date.isBefore(LocalDate.of(1885,1,1))) {
+            throw new IllegalArgumentException();
+        }
+        return deptEmpRepository.findEmployeeByDeptEmp(department,date);
+    }
 
 }
