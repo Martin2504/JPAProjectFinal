@@ -34,77 +34,53 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 class JpaProjectApplicationTests {
     @Autowired
     DeptEmpService deptEmpService;
-    @Autowired
-    StaffService staffService;
 
 
     @Test
     void contextLoads() {
     }
     @Nested
-    @DisplayName("staff service testing")
-    class staffServiceTesting {
-        Map<String, Integer> deptEmpNumberMap;
-        @BeforeEach
-        public void setUpValues() {
-            deptEmpNumberMap = staffService.getDeptAndNoOfEmpGivenYears(2000, 2003);
-        }
-        @Test
-        @DisplayName("Testing staff service returns the correct number of departments")
-        void testingAllDepartmentsAccountedForinGetDeptAndNoOfEmpGivenYears() {
-            assertEquals(9, deptEmpNumberMap.size());
-        }
+    @DisplayName("maria is testing")
+    class mariaTesting {
 
 
-    @Nested
-    @DisplayName("User selects a department and date")
-    class DepartmentAndDate {
+        @Nested
+        @DisplayName("User selects a department and date")
+        class DepartmentAndDate {
 
-        private String department;
-        private LocalDate date;
-        private List<Employee> employee;
+            private String department;
+            private LocalDate date;
+            private List<Employee> employee;
 
-        @BeforeEach
-        public void setUpDeptEmp() {
-            department = "d006";
-            date = LocalDate.of(1986, 2, 23);
-        }
-    }
-    @Nested
-    @DisplayName("When user has access to department")
-    class UserHasAccess {
-        @ParameterizedTest
-        @ValueSource(strings = {"d006", "d005"})
-        @DisplayName("Then display list of employees who worked in the department on specified date")
-        public void acceptedTestEmployeeByDeptEmp(String department) {
-            LocalDate date = LocalDate.of(1986, 2, 23);
-            List<Employee> employee = deptEmpService.findEmployeeByDeptEmp(department, date);
-            assertNotNull(employee);
-        }
-    }
-    @Nested
-    @DisplayName("When user does not have access to department")
-    class UserDoesNotHaveAccess {
-        @Test
-        @DisplayName("Then return Try again")
-        public void rejectedTestEmployeeByDeptEmp() {
-            LocalDate date = LocalDate.of(1700, 2, 23);
-            assertThrows(IllegalArgumentException.class, () -> deptEmpService.findEmployeeByDeptEmp("d004", date));
-
-        @ParameterizedTest
-        @ValueSource(strings = {
-                "Customer Service", "Development", "Finance", "Human Resources",
-                "Marketing", "Production", "Quality Management", "Research", "Sales"
-        })
-        @DisplayName("Determine every department is found in method")
-        public void checkEveryDepartmentFound(String departmentName) {
-            assertTrue(deptEmpNumberMap.containsKey(departmentName));
+            @BeforeEach
+            public void setUpDeptEmp() {
+                department = "d006";
+                date = LocalDate.of(1986, 2, 23);
+            }
         }
 
-        @Test
-        @DisplayName("Testing IllegalArgumentException thrown when dates overlap")
-        void testingExceptionThrownWithOverlappingParameters() {
-            assertThrows(IllegalArgumentException.class, () -> deptEmpNumberMap = staffService.getDeptAndNoOfEmpGivenYears(2001, 2000));
+        @Nested
+        @DisplayName("When user has access to department")
+        class UserHasAccess {
+            @ParameterizedTest
+            @ValueSource(strings = {"d006", "d005"})
+            @DisplayName("Then display list of employees who worked in the department on specified date")
+            public void acceptedTestEmployeeByDeptEmp(String department) {
+                LocalDate date = LocalDate.of(1986, 2, 23);
+                List<Employee> employee = deptEmpService.findEmployeeByDeptEmp(department, date);
+                assertNotNull(employee);
+            }
+        }
+
+        @Nested
+        @DisplayName("When user does not have access to department")
+        class UserDoesNotHaveAccess {
+            @Test
+            @DisplayName("Then return Try again")
+            public void rejectedTestEmployeeByDeptEmp() {
+                LocalDate date = LocalDate.of(1700, 2, 23);
+                assertThrows(IllegalArgumentException.class, () -> deptEmpService.findEmployeeByDeptEmp("d004", date));
+            }
 
         }
     }
