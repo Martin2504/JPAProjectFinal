@@ -23,4 +23,8 @@ public class EmployeeService {
         }
         return employeeRepository.findEmployeeGivenLastName(lastName);
     }
+
+    public List<Employee> getEmployeesWithSalaryOver(double salary) {
+        return employeeRepository.getEmployeesWithSalaryAbove(salary);
+    }
 }
