@@ -32,4 +32,10 @@ class EmployeeServiceTest {
         assertThrows(IllegalArgumentException.class, () -> employeeService.findEmployeesByLastName(""));
     }
 
+    @Test
+    @DisplayName("Testing genderComparison() method returns expected")
+    public void genderComparisonTest() {
+        assertEquals("Males: 179973 || Females: 120051", employeeService.genderComparison());
+    }
+
 }

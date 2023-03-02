@@ -23,4 +23,10 @@ public class EmployeeService {
         }
         return employeeRepository.findEmployeeGivenLastName(lastName);
     }
+
+    public String genderComparison() {
+        return "Males: " + String.valueOf(employeeRepository.findAmountOfMales()) +
+                " || Females: " + String.valueOf(employeeRepository.findAmountOfFemales());
+    }
+
 }
