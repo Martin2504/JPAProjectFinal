@@ -18,7 +18,9 @@ public class EmployeeService {
     }
 
     public List<Employee> findEmployeesByLastName(String lastName) {
+        if (lastName == null || lastName.length() == 0) {
+            throw new IllegalArgumentException();
+        }
         return employeeRepository.findEmployeeGivenLastName(lastName);
     }
-
 }
