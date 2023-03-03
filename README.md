@@ -1,8 +1,19 @@
 # JPAProject
 
 A program that deals with the Employees database from MySQL's Sample databases.
-Checks if Database is populated with values, calculates the salary averages for a department and the pay gap between genders.
-Below are testing results snapshots. 
+
+Checks if Database is populated with values, has a particular employee, calculates the salary averages for a department and the pay gap between genders:
+
+  -SalaryService implements methods that check for Salaries of all employees as well as averages and can be filtered by department or job title.
+
+  -GenderService implements methods that check for pay gaps between genders and can be filtered by job title and department.
+
+  -EmployeeService implements methods that finds an employee via their last name while DeptEmp Service will return a list of employees in a department at a certain date and Staff Service will return the number of employees for a given date.
+
+
+
+
+Below are testing results snapshots: 
 
 Employee pay gap by gender Test
 ![image](https://user-images.githubusercontent.com/117417937/222679893-2ca0f09d-bf3e-4c7f-9af9-cf84fdb7d598.png)
