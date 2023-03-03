@@ -31,6 +31,10 @@ public class SalaryService  {
                 salaryRepository.getSalariesByDept(getDeptNo(deptName), localDate) +" " + deptName2 + ": " + salaryRepository.getSalariesByDept(getDeptNo(deptName2), localDate)) ;
     }
 
+    public double getCompanySalaryAvg(){
+        return salaryRepository.getCompanyAverageSalary();
+    }
+
 
 
 
