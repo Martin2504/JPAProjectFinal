@@ -36,6 +36,12 @@ class SalaryServiceTest {
         assertNotEquals("Customer Service: 59892", salaryService.getDeptSalaryAvg("Development", LocalDate.of(2001,7,3)));
     }
 
+    @Test
+    @DisplayName("Get the average salary of employees in the company")
+    public void getCompanyAverageSalary() {
+        assertNotNull(salaryService.getCompanySalaryAvg());
+    }
+
 
 
 }
