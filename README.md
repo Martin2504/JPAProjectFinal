@@ -1,5 +1,9 @@
 # JPAProject
 
+A program that deals with the Employees database from MySQL's Sample databases.
+Checks if Database is populated with values, calculates the salary averages for a department and the pay gap between genders.
+Below are testing results snapshots. 
+
 Employee pay gap by gender Test
 ![image](https://user-images.githubusercontent.com/117417937/222679893-2ca0f09d-bf3e-4c7f-9af9-cf84fdb7d598.png)
 
