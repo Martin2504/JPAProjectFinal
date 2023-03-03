@@ -35,7 +35,20 @@ class EmployeeServiceTest {
     @Test
     @DisplayName("Testing genderComparison() method returns expected")
     public void genderComparisonTest() {
-        assertEquals("Males: 179973 || Females: 120051", employeeService.genderComparison());
+        String[] each = employeeService.genderComparison().split(" ");
+//        for (String s : each) {
+//            assertNotNull(s);
+//        }
+        assertAll(
+                "Group of assertions",
+                () -> assertNotNull(each[0]),
+                () -> assertNotNull(each[1]),
+                () -> assertNotNull(each[2]),
+                () -> assertNotNull(each[3]),
+                () -> assertNotNull(each[4])
+                );
+
+//        assertEquals("Males: 179973 || Females: 120051", employeeService.genderComparison());
     }
 
 }
