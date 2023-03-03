@@ -60,10 +60,7 @@ public interface SalaryRepository extends JpaRepository<Salary, SalaryId> {
             "WHERE employees.gender = :gender")
     Double getAverageSalaryByGender(@Param("gender") String gender);
 
-    @Query(nativeQuery = true, value = "SELECT AVG(salaries.salary) " +
-            "FROM salaries " +
-            "JOIN employees ON salaries.emp_no = employees.emp_no "
-    )
+    @Query(nativeQuery = true, value = "SELECT AVG(salaries.salary) FROM salaries ")
     Double getCompanyAverageSalary();
 
 }
