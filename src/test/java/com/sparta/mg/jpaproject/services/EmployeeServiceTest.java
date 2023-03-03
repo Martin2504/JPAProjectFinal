@@ -1,11 +1,19 @@
 package com.sparta.mg.jpaproject.services;
 
+import com.sparta.mg.jpaproject.model.entities.Employee;
+import com.sparta.mg.jpaproject.model.entities.Salary;
+import com.sparta.mg.jpaproject.model.entities.SalaryId;
 import com.sparta.mg.jpaproject.model.repositories.EmployeeRepository;
+import com.sparta.mg.jpaproject.model.repositories.SalaryRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import java.time.LocalDate;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -13,6 +21,12 @@ class EmployeeServiceTest {
 
     @Autowired
     EmployeeService employeeService;
+
+    @Autowired
+    EmployeeRepository employeeRepository;
+
+    @Autowired
+    SalaryRepository salaryRepository;
 
     @Test
     @DisplayName("Testing if list is populated after a last name is passed")
@@ -32,6 +46,18 @@ class EmployeeServiceTest {
         assertThrows(IllegalArgumentException.class, () -> employeeService.findEmployeesByLastName(""));
     }
 
+    @Test
+    public void testGetEmployeesWithSalaryOver_NoReturn() {
+        List<Employee> employees = employeeService.getEmployeesWithSalaryOver(200000);
+        assertEquals(0, employees.size());
+    }
+
+    @Test
+    public void testGetEmployeesWithSalaryOver(){
+        List<Employee> employees = employeeService.getEmployeesWithSalaryOver(155000);
+        assertEquals(3, employees.size());
+    }
+    
     @Test
     @DisplayName("Testing genderComparison() method returns expected")
     public void genderComparisonTest() {
