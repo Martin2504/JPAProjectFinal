@@ -17,4 +17,11 @@ public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
     @Query( nativeQuery = true,
             value = "Select DISTINCT employees.* from employees JOIN salaries ON employees.emp_no = salaries.emp_no  WHERE salaries.salary > :salary")
     List<Employee> getEmployeesWithSalaryAbove(double salary);
+
+    @Query(value = "SELECT Count(*) FROM employees.employees WHERE gender = 'M'", nativeQuery = true)
+    int findAmountOfMales();
+
+    @Query(value = "SELECT Count(*) FROM employees.employees WHERE gender = 'F'", nativeQuery = true)
+    int findAmountOfFemales ();
+
 }

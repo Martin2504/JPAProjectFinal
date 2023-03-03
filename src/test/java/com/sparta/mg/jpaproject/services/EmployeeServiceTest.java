@@ -57,4 +57,11 @@ class EmployeeServiceTest {
         List<Employee> employees = employeeService.getEmployeesWithSalaryOver(155000);
         assertEquals(3, employees.size());
     }
+    
+    @Test
+    @DisplayName("Testing genderComparison() method returns expected")
+    public void genderComparisonTest() {
+        assertEquals("Males: 179973 || Females: 120051", employeeService.genderComparison());
+    }
+
 }
