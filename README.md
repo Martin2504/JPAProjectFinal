@@ -7,4 +7,8 @@ Staff Service Tests
 ![image](https://user-images.githubusercontent.com/117417937/222681731-92912cfa-8503-4544-8507-13c1def1e91f.png)
 
 JPA Project Application Tests
+
 ![7f0a1e33-3263-4e96-a33a-39730a9a219c](https://user-images.githubusercontent.com/117417937/222685063-768c6e93-5438-4215-9c07-8de8e6a6cd98.jpg)
+
+SalaryService Tests
+![image](https://user-images.githubusercontent.com/117417937/222699712-3536714e-1843-4205-9213-5905b3a158ef.png)
