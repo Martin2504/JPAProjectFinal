@@ -16,3 +16,6 @@ JPA Project Application Tests
 
 SalaryService Tests
 ![image](https://user-images.githubusercontent.com/117417937/222699712-3536714e-1843-4205-9213-5905b3a158ef.png)
+
+Staff Service Tests
+![97ce0628-510a-4aba-84e5-db9a1133cd42](https://user-images.githubusercontent.com/117417937/222716642-ba6498ec-0993-4d41-b5f7-d97b33aafbe7.jpg)
