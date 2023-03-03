@@ -13,7 +13,7 @@ public class Salary {
     private SalaryId id;
 
     @MapsId("empNo")
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "emp_no", nullable = false)
     private Employee empNo;

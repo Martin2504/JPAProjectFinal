@@ -64,6 +64,6 @@ public interface SalaryRepository extends JpaRepository<Salary, SalaryId> {
             "FROM salaries " +
             "JOIN employees ON salaries.emp_no = employees.emp_no "
     )
-    Double getAverageSalary();
+    Double getCompanyAverageSalary();
 
 }
