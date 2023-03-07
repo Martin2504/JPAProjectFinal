@@ -37,7 +37,5 @@ class StaffServiceTest {
     @DisplayName("Testing IllegalArgumentException thrown when dates overlap")
     void testingExceptionThrownWithOverlappingParameters() {
         assertThrows(IllegalArgumentException.class, () -> staffService.getDeptAndNoOfEmpGivenYears(2001, 2000));
-
     }
-
 }

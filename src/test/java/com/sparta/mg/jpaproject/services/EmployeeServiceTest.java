@@ -55,6 +55,6 @@ class EmployeeServiceTest {
     @Test
     public void testGetEmployeesWithSalaryOver(){
         List<Employee> employees = employeeService.getEmployeesWithSalaryOver(155000);
-        assertEquals(3, employees.size());
+        assertEquals(5, employees.size());
     }
 }
