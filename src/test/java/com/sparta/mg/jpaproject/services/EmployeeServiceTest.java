@@ -57,4 +57,27 @@ class EmployeeServiceTest {
         List<Employee> employees = employeeService.getEmployeesWithSalaryOver(155000);
         assertEquals(5, employees.size());
     }
+<<<<<<< HEAD
+=======
+    
+    @Test
+    @DisplayName("Testing genderComparison() method returns expected")
+    public void genderComparisonTest() {
+        String[] each = employeeService.genderComparison().split(" ");
+//        for (String s : each) {
+//            assertNotNull(s);
+//        }
+        assertAll(
+                "Group of assertions",
+                () -> assertNotNull(each[0]),
+                () -> assertNotNull(each[1]),
+                () -> assertNotNull(each[2]),
+                () -> assertNotNull(each[3]),
+                () -> assertNotNull(each[4])
+                );
+
+//        assertEquals("Males: 179973 || Females: 120051", employeeService.genderComparison());
+    }
+
+>>>>>>> 5a38b13d7caecbf2183f35de5e6571471cfb84b6
 }

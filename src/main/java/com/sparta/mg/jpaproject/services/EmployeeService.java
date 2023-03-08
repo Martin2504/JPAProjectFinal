@@ -24,7 +24,15 @@ public class EmployeeService {
         return employeeRepository.findEmployeeGivenLastName(lastName);
     }
 
+
+
+
     public List<Employee> getEmployeesWithSalaryOver(double salary) {
         return employeeRepository.getEmployeesWithSalaryAbove(salary);
+    }
+
+    public String genderComparison() {
+        return "Males: " + String.valueOf(employeeRepository.findAmountOfMales()) +
+                " || Females: " + String.valueOf(employeeRepository.findAmountOfFemales());
     }
 }

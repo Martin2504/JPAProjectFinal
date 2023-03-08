@@ -3,20 +3,25 @@ package com.sparta.mg.jpaproject.services;
 import com.sparta.mg.jpaproject.model.repositories.DeptEmpRepository;
 import com.sparta.mg.jpaproject.model.repositories.SalaryRepository;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDate;
 
 @Service
-public class SalaryService  {
+public class SalaryService {
+
+    private final DeptEmpRepository deptEmpRepository;
 
     private SalaryRepository salaryRepository;
-
-    private DeptEmpRepository deptEmpRepository;
 
     public SalaryService(SalaryRepository salaryRepository, DeptEmpRepository deptEmpRepository){
         this.salaryRepository = salaryRepository;
         this.deptEmpRepository = deptEmpRepository;
     }
+
+
+    public double getAverageSalaryByTitleAndYear(LocalDate startDate, LocalDate endDate, String jobTitle) {
+        return salaryRepository.getAverageSalaryByTitleAndYear(startDate, endDate, jobTitle);
+    }
+
 
     public String getDeptNo(String department){
         return salaryRepository.getDeptNo(department);
@@ -34,7 +39,6 @@ public class SalaryService  {
     public double getCompanySalaryAvg(){
         return salaryRepository.getCompanyAverageSalary();
     }
-
 
 
 
