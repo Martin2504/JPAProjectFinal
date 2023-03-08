@@ -1,14 +1,14 @@
 package com.sparta.mg.jpaproject.model.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 @Table(name = "departments")
 public class Department {
     @Id
+    @GenericGenerator(name = "dept_no", strategy = "com.sparta.mg.jpaproject.model.generators.StringSequenceIdentifier")
+    @GeneratedValue(generator = "dept_no")
     @Column(name = "dept_no", nullable = false, length = 4)
     private String id;
 
