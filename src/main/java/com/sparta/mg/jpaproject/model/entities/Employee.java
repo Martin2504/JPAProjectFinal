@@ -1,9 +1,7 @@
 package com.sparta.mg.jpaproject.model.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.persistence.*;
 
 import java.time.LocalDate;
 
@@ -14,6 +12,7 @@ public class Employee {
     @Column(name = "emp_no", nullable = false)
     private Integer id;
 
+    @JsonFormat(pattern = "dd/MM/yyyy")
     @Column(name = "birth_date", nullable = false)
     private LocalDate birthDate;
 
@@ -26,6 +25,7 @@ public class Employee {
     @Column(name = "gender", nullable = false, length = 1)
     private String gender;
 
+    @JsonFormat(pattern = "dd/MM/yyyy")
     @Column(name = "hire_date", nullable = false)
     private LocalDate hireDate;
 

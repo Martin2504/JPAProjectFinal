@@ -24,4 +24,5 @@ public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
     @Query(value = "SELECT Count(*) FROM employees.employees WHERE gender = 'F'", nativeQuery = true)
     int findAmountOfFemales ();
 
+    Employee findEmployeeById(Integer id);
 }
