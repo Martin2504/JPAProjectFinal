@@ -4,6 +4,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sparta.mg.jpaproject.model.entities.Department;
 import com.sparta.mg.jpaproject.model.repositories.DepartmentRepository;
+import com.sparta.mg.jpaproject.services.ApiKeyService;
+import com.sparta.mg.jpaproject.tools.CRUD;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -18,21 +20,28 @@ public class DepartmentController {
     //Samir
 
     private final DepartmentRepository departmentRepository;
+    private final ApiKeyService apiKeyService;
 
     private ObjectMapper mapper;
 
     @Autowired
-    public DepartmentController(DepartmentRepository departmentRepository, ObjectMapper mapper) {
+    public DepartmentController(DepartmentRepository departmentRepository, ApiKeyService apiKeyService, ObjectMapper mapper) {
         this.departmentRepository = departmentRepository;
+        this.apiKeyService = apiKeyService;
         this.mapper = mapper;
     }
 
     @PostMapping(value = "/department")
-    public ResponseEntity<String> createNewDepartment(@RequestParam String departmentName) {
-        Department department = new Department();
-        department.setDeptName(departmentName);
+    public ResponseEntity<String> createNewDepartment(@RequestParam String departmentName, @RequestHeader("x-api-key") String apiKey) {
+
+        if (!apiKeyService.validateUser(apiKey, CRUD.CREATE)) {
+            return apiKeyService.getInvalidApiKeyResponse();
+        }
+
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("content-type", "application/json");
+        Department department = new Department();
+        department.setDeptName(departmentName);
 
         try {
             departmentRepository.save(department);
@@ -54,7 +63,11 @@ public class DepartmentController {
     }
 
     @GetMapping("/departments")
-    public ResponseEntity<String> getAllDepartments() {
+    public ResponseEntity<String> getAllDepartments(@RequestHeader("x-api-key") String apiKey) {
+        if (!apiKeyService.validateUser(apiKey, CRUD.READ)) {
+            return apiKeyService.getInvalidApiKeyResponse();
+        }
+
         List<Department> departments = departmentRepository.findAll();
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("content-type", "application/json");
@@ -79,7 +92,12 @@ public class DepartmentController {
     }
 
     @PatchMapping("/department/{deptId}")
-    public ResponseEntity<String> updateDepartmentNameWithId(@PathVariable String deptId, @RequestParam String deptName) {
+    public ResponseEntity<String> updateDepartmentNameWithId(@PathVariable String deptId, @RequestParam String deptName,
+                                                             @RequestHeader("x-api-key") String apiKey) {
+
+        if (!apiKeyService.validateUser(apiKey, CRUD.UPDATE)) {
+            return apiKeyService.getInvalidApiKeyResponse();
+        }
         Optional<Department> department = departmentRepository.findById(deptId);
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("content-type", "application/json");
@@ -108,7 +126,12 @@ public class DepartmentController {
     }
 
     @DeleteMapping("/department/{deptId}")
-    public ResponseEntity<String> deleteDepartmentWithId(@PathVariable String deptId) {
+    public ResponseEntity<String> deleteDepartmentWithId(@PathVariable String deptId, @RequestHeader("x-api-key") String apiKey) {
+
+        if (!apiKeyService.validateUser(apiKey, CRUD.UPDATE)) {
+            return apiKeyService.getInvalidApiKeyResponse();
+        }
+
         Optional<Department> department = departmentRepository.findById(deptId);
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("content-type", "application/json");
