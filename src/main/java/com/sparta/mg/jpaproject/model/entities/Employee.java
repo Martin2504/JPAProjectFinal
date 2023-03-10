@@ -6,6 +6,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 @Entity
 @Table(name = "employees")
@@ -88,4 +89,5 @@ public class Employee {
                 ", hireDate=" + hireDate +
                 '}';
     }
+
 }
