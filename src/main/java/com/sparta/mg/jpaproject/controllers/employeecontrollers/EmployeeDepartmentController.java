@@ -15,9 +15,6 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.util.Optional;
 
-@RestController
-public class EmployeeDepartmentController {
-    package com.sparta.mg.jpaproject.controllers.employeecontrollers;
 
 import com.sparta.mg.jpaproject.model.entities.*;
 import com.sparta.mg.jpaproject.model.repositories.DeptEmpRepository;
@@ -90,4 +87,3 @@ import java.util.Optional;
 
     }
 
-}
