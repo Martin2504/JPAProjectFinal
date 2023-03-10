@@ -31,7 +31,7 @@ public class RegisterController {
                 AccessLevel access = AccessLevel.valueOf(accessLevel);
                 ApiKeyTable user = new ApiKeyTable();
                 user.setUserName(userName);
-                user.setUserLevel(access.getDesc());
+                user.setUserLevel(access.name());
                 apiKeyService.saveNewApiKeyUser(user);
 
                 ResponseEntity<String> response = new ResponseEntity<>(

@@ -128,7 +128,7 @@ public class DepartmentController {
     @DeleteMapping("/department/{deptId}")
     public ResponseEntity<String> deleteDepartmentWithId(@PathVariable String deptId, @RequestHeader("x-api-key") String apiKey) {
 
-        if (!apiKeyService.validateUser(apiKey, CRUD.UPDATE)) {
+        if (!apiKeyService.validateUser(apiKey, CRUD.DELETE)) {
             return apiKeyService.getInvalidApiKeyResponse();
         }
 

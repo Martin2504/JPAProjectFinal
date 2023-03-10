@@ -18,9 +18,9 @@ public class ApiKeyTable {
     @Column(name = "api_key", nullable = false, unique = true)
     private String apiKey;
 
-    @Size(max = 4)
+    @Size(max = 6)
     @NotNull
-    @Column(name = "user_level", nullable = false, length = 4)
+    @Column(name = "user_level", nullable = false, length = 6)
     private String userLevel;
 
     public String getUserName() {

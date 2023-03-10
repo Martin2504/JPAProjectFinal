@@ -44,9 +44,9 @@ public class ApiKeyService {
 
         if (optionalUser.isPresent()) {
             ApiKeyTable user = optionalUser.get();
-            if (Objects.equals(user.getUserLevel(), AccessLevel.ADMIN.getDesc())) {
+            if (Objects.equals(user.getUserLevel(), AccessLevel.ADMIN.name())) {
                 return true;
-            } else if (Objects.equals(user.getUserLevel(), AccessLevel.UPDATE.getDesc())) {
+            } else if (Objects.equals(user.getUserLevel(), AccessLevel.UPDATE.name())) {
                 if (crud == CRUD.DELETE) {
                     return false;
                 } else {
