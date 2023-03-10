@@ -1,10 +1,5 @@
 package com.sparta.mg.jpaproject.controllers.departmentcontrollers;
 
-
-import com.fasterxml.jackson.core.JsonProcessingException;
-import org.springframework.http.ResponseEntity;
-
-public class DepartmentController {
     //Samir
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -164,5 +159,4 @@ public class DepartmentController {
         );
         return noDepartmentExistResponse;
     }
-}
 }
