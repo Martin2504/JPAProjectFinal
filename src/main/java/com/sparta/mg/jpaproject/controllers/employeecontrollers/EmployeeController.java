@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 public class EmployeeController {
 
@@ -44,7 +46,7 @@ public class EmployeeController {
 
         if (employeeRepository.findEmployeeById(id) == null) {
             return new ResponseEntity<>(
-                   "Employee with ID " + id + " doesn't exist",
+                   "Employee with ID " + id + " doesn't exist.",
                    new HttpHeaders(),
                    HttpStatus.NOT_FOUND);
         } else {
@@ -55,6 +57,37 @@ public class EmployeeController {
         }
     }
 
+    @PatchMapping(value = "/employee")
+    public ResponseEntity<String> updateEmployee(@RequestBody Employee employee) {
 
+        if (employeeRepository.findEmployeeById(employee.getId()) == null) {
+            return new ResponseEntity<>(
+                    "Employee with ID " + employee.getId() + " doesn't exist.",
+                    new HttpHeaders(),
+                    HttpStatus.NOT_FOUND);
+        } else {
+            employeeRepository.save(employee);
+            return new ResponseEntity<>(
+                    "Employee with ID " + employee.getId() + " has been updated.",
+                    new HttpHeaders(),
+                    HttpStatus.OK);
+        }
+    }
 
+    @DeleteMapping(value = "employee/{id}")
+    public ResponseEntity<String> deleteEmployeeById(@PathVariable Integer id) {
+
+        if (employeeRepository.findEmployeeById(id) != null) {
+            employeeRepository.delete(employeeRepository.findEmployeeById(id));
+            return new ResponseEntity<>(
+                    "Employee with ID " + id + " has been deleted.",
+                    new HttpHeaders(),
+                    HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(
+                    "Employee with ID " + id + " doesn't exist.",
+                    new HttpHeaders(),
+                    HttpStatus.NOT_FOUND);
+        }
+    }
 }
