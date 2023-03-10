@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 @Entity
 @Table(name = "employees")
@@ -88,4 +89,5 @@ public class Employee {
                 ", hireDate=" + hireDate +
                 '}';
     }
+
 }
