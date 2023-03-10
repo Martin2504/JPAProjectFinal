@@ -2,6 +2,7 @@ package com.sparta.mg.jpaproject;
 
 import com.sparta.mg.jpaproject.model.repositories.DepartmentRepository;
 import com.sparta.mg.jpaproject.model.repositories.SalaryRepository;
+
 import com.sparta.mg.jpaproject.services.DepartmentService;
 import com.sparta.mg.jpaproject.services.EmployeeService;
 import com.sparta.mg.jpaproject.services.SalaryService;

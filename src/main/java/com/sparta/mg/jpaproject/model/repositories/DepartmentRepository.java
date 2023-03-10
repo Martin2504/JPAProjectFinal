@@ -2,6 +2,7 @@ package com.sparta.mg.jpaproject.model.repositories;
 
 import com.sparta.mg.jpaproject.model.entities.Department;
 import com.sparta.mg.jpaproject.model.entities.Employee;
+
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -34,6 +35,7 @@ public interface DepartmentRepository extends JpaRepository<Department, String> 
  @Transactional
  @Query(value = "UPDATE Department d SET d.deptName = :deptName WHERE d.id = :deptId")
  void updateDepartmentNameById(String deptName, String deptId);
+
 
 
 
