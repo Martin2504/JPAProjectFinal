@@ -1,5 +1,6 @@
 package com.sparta.mg.jpaproject.controllers;
 
+import com.sparta.mg.jpaproject.controllers.employeecontrollers.EmployeeSalaryController;
 import com.sparta.mg.jpaproject.model.entities.Employee;
 import com.sparta.mg.jpaproject.model.entities.Salary;
 import com.sparta.mg.jpaproject.model.entities.SalaryId;
@@ -42,11 +43,11 @@ class SalaryControllerTest {
     private EmployeeRepository employeeRepository;
 
     @InjectMocks
-    private SalaryController salaryController;
+    private EmployeeSalaryController employeeSalaryController;
 
     @BeforeEach
     public void setUp() {
-        mockMvc = MockMvcBuilders.standaloneSetup(salaryController).build();
+        mockMvc = MockMvcBuilders.standaloneSetup(employeeSalaryController).build();
     }
 
     @Test
