@@ -6,13 +6,10 @@ import com.sparta.mg.jpaproject.model.entities.SalaryId;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-<<<<<<< HEAD
 
-
-=======
->>>>>>> 5a38b13d7caecbf2183f35de5e6571471cfb84b6
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 public interface SalaryRepository extends JpaRepository<Salary, SalaryId> {
 
@@ -73,9 +70,13 @@ public interface SalaryRepository extends JpaRepository<Salary, SalaryId> {
     @Query(nativeQuery = true, value = "SELECT AVG(salaries.salary) FROM salaries ")
     Double getCompanyAverageSalary();
 
-<<<<<<< HEAD
-}
-=======
+    List<Salary> findSalariesByEmpNo(Employee empNo);
+
+    @Query(nativeQuery = true, value = "SELECT * " +
+            "FROM salaries " +
+            "WHERE emp_no = :empNo " +
+            "AND from_date = :fromDate")
+    Optional<Salary> findSalariesByEmpNoAndFromDate(int empNo, LocalDate fromDate);
 
 }
->>>>>>> 5a38b13d7caecbf2183f35de5e6571471cfb84b6
+
