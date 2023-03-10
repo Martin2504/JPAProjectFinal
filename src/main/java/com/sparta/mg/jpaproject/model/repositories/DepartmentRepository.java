@@ -36,6 +36,4 @@ public interface DepartmentRepository extends JpaRepository<Department, String> 
  void updateDepartmentNameById(String deptName, String deptId);
 
 
-
-
  }
