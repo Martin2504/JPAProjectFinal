@@ -7,6 +7,8 @@ import com.sparta.mg.jpaproject.model.entities.Salary;
 import com.sparta.mg.jpaproject.model.entities.SalaryId;
 import com.sparta.mg.jpaproject.model.repositories.EmployeeRepository;
 import com.sparta.mg.jpaproject.model.repositories.SalaryRepository;
+import com.sparta.mg.jpaproject.services.ApiKeyService;
+import com.sparta.mg.jpaproject.tools.CRUD;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -23,17 +25,29 @@ public class EmployeeSalaryController {
     // Ali
 
     private SalaryRepository salaryRepository;
+    private ApiKeyService apiKeyService;
     private EmployeeRepository employeeRepository;
 
     @Autowired
-    public EmployeeSalaryController(SalaryRepository salaryRepository, EmployeeRepository employeeRepository) {
+    public EmployeeSalaryController(SalaryRepository salaryRepository, ApiKeyService apiKeyService, EmployeeRepository employeeRepository) {
         this.salaryRepository = salaryRepository;
+        this.apiKeyService = apiKeyService;
         this.employeeRepository = employeeRepository;
     }
 
     //Create Method
     @PostMapping("/employee/salary/{empNo}")
-    public ResponseEntity<String> createSalary(@PathVariable Integer empNo, @RequestParam("salary") int salary, @RequestParam("fromDate") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate fromDate, @RequestParam("toDate") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate toDate) {
+    public ResponseEntity<String> createSalary(
+            @PathVariable Integer empNo,
+            @RequestParam("salary") int salary,
+            @RequestParam("fromDate") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate fromDate,
+            @RequestParam("toDate") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate toDate,
+            @RequestHeader("x-api-key") String apiKey) {
+
+        if (!apiKeyService.validateUser(apiKey, CRUD.CREATE)) {
+            return apiKeyService.getInvalidApiKeyResponse();
+        }
+
         Optional<Employee> emp1 = employeeRepository.findById(empNo);
         if (emp1.isPresent()) {
             Salary newSalary = new Salary();
@@ -53,7 +67,13 @@ public class EmployeeSalaryController {
 
     //Read Method
     @GetMapping("/employee/salary/{empNo}")
-    public ResponseEntity<String> getSalaryByEmpNo(@PathVariable Integer empNo) {
+    public ResponseEntity<String> getSalaryByEmpNo(
+            @PathVariable Integer empNo,
+            @RequestHeader("x-api-key") String apiKey) {
+
+        if (!apiKeyService.validateUser(apiKey, CRUD.READ)) {
+            return apiKeyService.getInvalidApiKeyResponse();
+        }
         Optional<Employee> emp1 = employeeRepository.findById(empNo);
         if (emp1.isPresent()) {
             List<Salary> salaries = salaryRepository.findSalariesByEmpNo(emp1.get());
@@ -73,7 +93,12 @@ public class EmployeeSalaryController {
             @PathVariable("empNo") int empNo,
             @PathVariable("fromDate") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate fromDate,
             @RequestParam int salary,
-            @RequestParam("toDate") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate toDate) {
+            @RequestParam("toDate") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate toDate,
+            @RequestHeader("x-api-key") String apiKey) {
+
+        if (!apiKeyService.validateUser(apiKey, CRUD.UPDATE)) {
+            return apiKeyService.getInvalidApiKeyResponse();
+        }
         Optional<Salary> existingSalary = salaryRepository.findSalariesByEmpNoAndFromDate(empNo, fromDate);
         if (existingSalary.isPresent()) {
             Salary updatedSalary = existingSalary.get();
@@ -89,7 +114,13 @@ public class EmployeeSalaryController {
 
     //Delete Method
     @DeleteMapping("/employee/salaries/{empNo}")
-    public ResponseEntity<String> deleteSalary(@PathVariable("empNo") int empNo) {
+    public ResponseEntity<String> deleteSalary(
+            @PathVariable("empNo") int empNo,
+            @RequestHeader("x-api-key") String apiKey) {
+
+        if (!apiKeyService.validateUser(apiKey, CRUD.DELETE)) {
+            return apiKeyService.getInvalidApiKeyResponse();
+        }
         Optional<Employee> emp1 = employeeRepository.findById(empNo);
         List<Salary> salaries = salaryRepository.findSalariesByEmpNo(emp1.get());
         if (emp1.isPresent()) {
