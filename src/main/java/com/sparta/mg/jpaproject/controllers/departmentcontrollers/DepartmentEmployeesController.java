@@ -43,8 +43,8 @@ public class DepartmentEmployeesController {
         }
         Pageable page = PageRequest.of(pageNumber, size);
         Page<Employee> pages = deptEmpRepository.getEmployeesByDeptNo(deptId, page);
-        System.out.println(pages.getTotalPages());
+        System.out.println(pages.toList().toString());
 
-        return null;
+        return ResponseEntity.ok("The capabilities of this man");
     }
 }
