@@ -36,7 +36,8 @@ public interface DepartmentRepository extends JpaRepository<Department, String> 
  @Query(value = "UPDATE Department d SET d.deptName = :deptName WHERE d.id = :deptId")
  void updateDepartmentNameById(String deptName, String deptId);
 
-
+ @Query(value = "SELECT d.id AS count FROM Department d")
+ List<String> getAllDepartmentIds();
 
 
 
