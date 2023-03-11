@@ -1,13 +1,20 @@
 package com.sparta.mg.jpaproject.model.generators;
 
+import com.sparta.mg.jpaproject.model.repositories.DepartmentRepository;
+import jakarta.persistence.EntityManager;
 import org.hibernate.HibernateException;
 import org.hibernate.MappingException;
+import org.hibernate.Session;
 import org.hibernate.boot.model.relational.Database;
 import org.hibernate.boot.model.relational.SqlStringGenerationContext;
 import org.hibernate.engine.spi.SharedSessionContractImplementor;
 import org.hibernate.id.IdentifierGenerator;
+import org.hibernate.jdbc.Work;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.type.Type;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import java.sql.*;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -15,8 +22,16 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Properties;
 
+@Service
 public class StringSequenceIdentifier implements
         IdentifierGenerator {
+
+    private final EntityManager entityManager;
+
+    @Autowired
+    public StringSequenceIdentifier(EntityManager entityManager) {
+        this.entityManager = entityManager;
+    }
 
     @Override
     public void configure(Type type, Properties params, ServiceRegistry serviceRegistry) throws MappingException {
@@ -38,30 +53,28 @@ public class StringSequenceIdentifier implements
 
         String prefix = "d";
 
-        try (Connection connection = DriverManager.getConnection(
-                "jdbc:mysql://localhost:3306/employees",
-                "root",
-                "root")
-        ){
-            Statement statement=connection.createStatement();
+        try {
+            Session session = (Session) entityManager.getDelegate();
 
+            session.doWork(new Work() {
+                @Override
+                public void execute(Connection connection) throws SQLException {
+                   Statement statement = connection.createStatement();
+                }
+            });
+
+            List<String> idStrings = departmentRepository.getAllDepartmentIds();
             List<Integer> ids = new ArrayList<>();
-            ResultSet rs=statement.executeQuery("SELECT dept_no AS count FROM employees.departments");
-
-            while(rs.next())
-            {
-                String total = rs.getString(1);
-                String intValue = total.substring(1);
-                int id = Integer.parseInt(intValue);
-                ids.add(id);
-
+            for (String s: idStrings) {
+                ids.add(Integer.parseInt(s.substring(1)));
             }
+
             Collections.sort(ids);
             int id = ids.get(ids.size()-1)+1;
             DecimalFormat formatIdToString = new DecimalFormat("#000");
             String generatedId = prefix + formatIdToString.format(id);
             return generatedId;
-        } catch (SQLException e) {
+        } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
