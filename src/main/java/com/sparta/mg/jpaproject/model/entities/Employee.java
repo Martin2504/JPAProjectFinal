@@ -2,6 +2,7 @@ package com.sparta.mg.jpaproject.model.entities;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
+import org.hibernate.annotations.GenericGenerator;
 
 import java.time.LocalDate;
 
@@ -10,6 +11,8 @@ import java.time.LocalDate;
 public class Employee {
     @Id
     @Column(name = "emp_no", nullable = false)
+    @GenericGenerator(name = "emp_no", strategy = "com.sparta.mg.jpaproject.model.generators.EmployeeGenerator")
+    @GeneratedValue(generator = "emp_no")
     private Integer id;
 
     @JsonFormat(pattern = "dd/MM/yyyy")

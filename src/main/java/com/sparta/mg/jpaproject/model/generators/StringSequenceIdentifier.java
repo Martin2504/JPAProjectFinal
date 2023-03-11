@@ -1,6 +1,5 @@
 package com.sparta.mg.jpaproject.model.generators;
 
-import com.sparta.mg.jpaproject.model.repositories.DepartmentRepository;
 import jakarta.persistence.EntityManager;
 import org.hibernate.HibernateException;
 import org.hibernate.MappingException;
@@ -13,6 +12,7 @@ import org.hibernate.jdbc.Work;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.type.Type;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import java.sql.*;
@@ -26,11 +26,11 @@ import java.util.Properties;
 public class StringSequenceIdentifier implements
         IdentifierGenerator {
 
-    private final EntityManager entityManager;
+    private final JdbcTemplate template;
 
     @Autowired
-    public StringSequenceIdentifier(EntityManager entityManager) {
-        this.entityManager = entityManager;
+    public StringSequenceIdentifier(JdbcTemplate template) {
+        this.template = template;
     }
 
     @Override
@@ -52,19 +52,11 @@ public class StringSequenceIdentifier implements
     public Object generate(SharedSessionContractImplementor sharedSessionContractImplementor, Object o) throws HibernateException {
 
         String prefix = "d";
+        List<Integer> ids = new ArrayList<>();
 
         try {
-            Session session = (Session) entityManager.getDelegate();
+            List<String> idStrings = template.queryForList("SELECT dept_no AS count FROM employees.departments", String.class);
 
-            session.doWork(new Work() {
-                @Override
-                public void execute(Connection connection) throws SQLException {
-                   Statement statement = connection.createStatement();
-                }
-            });
-
-            List<String> idStrings = departmentRepository.getAllDepartmentIds();
-            List<Integer> ids = new ArrayList<>();
             for (String s: idStrings) {
                 ids.add(Integer.parseInt(s.substring(1)));
             }
@@ -72,8 +64,7 @@ public class StringSequenceIdentifier implements
             Collections.sort(ids);
             int id = ids.get(ids.size()-1)+1;
             DecimalFormat formatIdToString = new DecimalFormat("#000");
-            String generatedId = prefix + formatIdToString.format(id);
-            return generatedId;
+            return prefix + formatIdToString.format(id);
         } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
