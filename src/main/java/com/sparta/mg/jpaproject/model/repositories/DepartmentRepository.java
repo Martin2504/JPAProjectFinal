@@ -11,6 +11,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 public interface DepartmentRepository extends JpaRepository<Department, String> {
 
@@ -36,8 +37,8 @@ public interface DepartmentRepository extends JpaRepository<Department, String> 
  @Query(value = "UPDATE Department d SET d.deptName = :deptName WHERE d.id = :deptId")
  void updateDepartmentNameById(String deptName, String deptId);
 
- @Query(value = "SELECT d.id AS count FROM Department d")
- List<String> getAllDepartmentIds();
+ @Query(value = "SELECT d FROM Department d WHERE d.deptName = :deptName")
+ Optional<Department> getDepartmentByName(String deptName);
 
 
 

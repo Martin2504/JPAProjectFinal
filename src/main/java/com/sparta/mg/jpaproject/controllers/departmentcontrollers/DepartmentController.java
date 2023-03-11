@@ -46,13 +46,15 @@ public class DepartmentController {
         department.setDeptName(departmentName);
 
         try {
-            departmentRepository.save(department);
-            ResponseEntity<String> response = new ResponseEntity<>(
-                    "{\"message\":\"The department of name " + departmentName + " has been saved\"}",
-                    httpHeaders,
-                    HttpStatus.CREATED
-            );
-            return response;
+            if (departmentRepository.getDepartmentByName(departmentName).isEmpty()) {
+                departmentRepository.save(department);
+                ResponseEntity<String> response = new ResponseEntity<>(
+                        "{\"message\":\"The department of name " + departmentName + " has been saved\"}",
+                        httpHeaders,
+                        HttpStatus.CREATED
+                );
+                return response;
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
