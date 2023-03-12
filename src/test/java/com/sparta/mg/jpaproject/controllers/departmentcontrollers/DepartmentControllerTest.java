@@ -14,18 +14,14 @@ import org.mockito.Spy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -101,12 +97,36 @@ class DepartmentControllerTest {
 
     @Test
     @DisplayName("Update the department")
-    void testUpdateDepartment() {
-        RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<String> responseEntity = restTemplate.patchForObject(
-                "http://localhost:8080/authors", String.class);
-        System.out.println(responseEntity.getBody());
-        assertEquals(200, responseEntity.getStatusCode().value());
+    void testUpdateDepartment() throws Exception {
+        Department department = mock(Department.class);
+
+        Department example = new Department();
+        example.setId("d001");
+        example.setDeptName("mock department");
+
+        when(apiKeyService.validateUser(anyString(), eq(CRUD.UPDATE))).thenReturn(true);
+        when(departmentRepository.findById("d001")).thenReturn(Optional.of(department));
+        when(objectMapper.writeValueAsString(anyString())).thenReturn(mapper.writeValueAsString(example));
+
+        mockMvc.perform(MockMvcRequestBuilders.patch("/department/d001")
+                .param("deptName", "mock department name")
+                .header("x-api-key", "c47b64b4-1822-4732-aa46-63fae45895bd"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("Delete a department")
+    public void testDeletingDepartment() throws Exception {
+        Department department = mock(Department.class);
+
+        when(apiKeyService.validateUser(anyString(), eq(CRUD.DELETE))).thenReturn(true);
+        when(departmentRepository.findById(anyString())).thenReturn(Optional.ofNullable(department));
+        when(objectMapper.writeValueAsString(anyString())).thenReturn(mapper.writeValueAsString("Random"));
+
+        mockMvc.perform(MockMvcRequestBuilders.delete("/department/d001")
+                        .header("x-api-key", "c47b64b4-1822-4732-aa46-63fae45895bd"))
+                .andExpect(status().isOk());
+
     }
 
 
