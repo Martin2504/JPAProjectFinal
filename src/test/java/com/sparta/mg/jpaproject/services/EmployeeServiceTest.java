@@ -76,5 +76,4 @@ class EmployeeServiceTest {
 
 //        assertEquals("Males: 179973 || Females: 120051", employeeService.genderComparison());
     }
-
 }

@@ -2,6 +2,7 @@ package com.sparta.mg.jpaproject.model.repositories;
 
 import com.sparta.mg.jpaproject.model.entities.Department;
 import com.sparta.mg.jpaproject.model.entities.Employee;
+
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -10,6 +11,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 public interface DepartmentRepository extends JpaRepository<Department, String> {
 
@@ -35,6 +37,8 @@ public interface DepartmentRepository extends JpaRepository<Department, String> 
  @Query(value = "UPDATE Department d SET d.deptName = :deptName WHERE d.id = :deptId")
  void updateDepartmentNameById(String deptName, String deptId);
 
+ @Query(value = "SELECT d FROM Department d WHERE d.deptName = :deptName")
+ Optional<Department> getDepartmentByName(String deptName);
 
 
 

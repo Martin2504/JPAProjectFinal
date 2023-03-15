@@ -1,5 +1,7 @@
 package com.sparta.mg.jpaproject.controllers.departmentcontrollers;
 
+//Samir
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sparta.mg.jpaproject.model.entities.Department;
@@ -44,13 +46,15 @@ public class DepartmentController {
         department.setDeptName(departmentName);
 
         try {
-            departmentRepository.save(department);
-            ResponseEntity<String> response = new ResponseEntity<>(
-                    "{\"message\":\"The department of name " + departmentName + " has been saved\"}",
-                    httpHeaders,
-                    HttpStatus.CREATED
-            );
-            return response;
+            if (departmentRepository.getDepartmentByName(departmentName).isEmpty()) {
+                departmentRepository.save(department);
+                ResponseEntity<String> response = new ResponseEntity<>(
+                        "{\"message\":\"The department of name " + departmentName + " has been saved\"}",
+                        httpHeaders,
+                        HttpStatus.CREATED
+                );
+                return response;
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -67,21 +71,20 @@ public class DepartmentController {
         if (!apiKeyService.validateUser(apiKey, CRUD.READ)) {
             return apiKeyService.getInvalidApiKeyResponse();
         }
-
-        List<Department> departments = departmentRepository.findAll();
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("content-type", "application/json");
-        if (departments.size() > 0) {
-            try {
+        try {
+            List<Department> departments = departmentRepository.findAll();
+            if (departments.size() > 0) {
                 ResponseEntity<String> response = new ResponseEntity<>(
                         mapper.writeValueAsString(departments),
                         httpHeaders,
                         HttpStatus.OK
                 );
                 return response;
-            } catch (JsonProcessingException e) {
-                e.printStackTrace();
             }
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
         }
         ResponseEntity<String> noDepartmentsExistResponse = new ResponseEntity<>(
                 "{\"message\":\"There are no departments saved in the database\"}",
@@ -98,13 +101,15 @@ public class DepartmentController {
         if (!apiKeyService.validateUser(apiKey, CRUD.UPDATE)) {
             return apiKeyService.getInvalidApiKeyResponse();
         }
-        Optional<Department> department = departmentRepository.findById(deptId);
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("content-type", "application/json");
-        if (department.isPresent()) {
-            departmentRepository.updateDepartmentNameById(deptName, deptId);
-            ResponseEntity<String> response = null;
-            try {
+        try {
+            Optional<Department> department = departmentRepository.findById(deptId);
+            if (department.isPresent()) {
+
+                departmentRepository.updateDepartmentNameById(deptName, deptId);
+                ResponseEntity<String> response = null;
+
                 response = new ResponseEntity<>(
                         mapper.writeValueAsString("{\"message\":\"The department of id "
                                 + deptId + " has been updated with the department name of "
@@ -113,9 +118,9 @@ public class DepartmentController {
                         HttpStatus.OK
                 );
                 return response;
-            } catch (JsonProcessingException e) {
-                throw new RuntimeException(e);
             }
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
         }
         ResponseEntity<String> noDepartmentExistResponse = new ResponseEntity<>(
                 "{\"message\":\"The department of id " + deptId + " doesn't exist in the database\"}",
@@ -131,14 +136,13 @@ public class DepartmentController {
         if (!apiKeyService.validateUser(apiKey, CRUD.DELETE)) {
             return apiKeyService.getInvalidApiKeyResponse();
         }
-
-        Optional<Department> department = departmentRepository.findById(deptId);
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("content-type", "application/json");
-        if (department.isPresent()) {
-            departmentRepository.deleteById(deptId);
-            ResponseEntity<String> response = null;
-            try {
+        try {
+            Optional<Department> department = departmentRepository.findById(deptId);
+            if (department.isPresent()) {
+                departmentRepository.deleteById(deptId);
+                ResponseEntity<String> response = null;
                 response = new ResponseEntity<>(
                         mapper.writeValueAsString("{\"message\":\"The department with id "
                                 + deptId + " has been deleted\"}"),
@@ -146,9 +150,9 @@ public class DepartmentController {
                         HttpStatus.OK
                 );
                 return response;
-            } catch (JsonProcessingException e) {
-                throw new RuntimeException(e);
             }
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
         }
         ResponseEntity<String> noDepartmentExistResponse = new ResponseEntity<>(
                 "{\"message\":\"The department of id " + deptId + " doesn't exist in the database\"}",
