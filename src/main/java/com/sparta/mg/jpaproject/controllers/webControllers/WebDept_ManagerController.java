@@ -3,9 +3,9 @@ package com.sparta.mg.jpaproject.controllers.webControllers;
 import com.sparta.mg.jpaproject.model.entities.Department;
 import com.sparta.mg.jpaproject.model.entities.DeptManager;
 import com.sparta.mg.jpaproject.model.entities.DeptManagerId;
-import com.sparta.mg.jpaproject.model.entities.Employee;
 import com.sparta.mg.jpaproject.model.repositories.DepartmentRepository;
 import com.sparta.mg.jpaproject.model.repositories.DeptManagerRepository;
+import com.sparta.mg.jpaproject.model.repositories.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,10 +23,13 @@ public class WebDept_ManagerController {
 
     private final DepartmentRepository departmentRepository;
 
+    private final EmployeeRepository employeeRepository;
+
     @Autowired
-    public WebDept_ManagerController(DeptManagerRepository deptManagerRepository, DepartmentRepository departmentRepository) {
+    public WebDept_ManagerController(DeptManagerRepository deptManagerRepository, DepartmentRepository departmentRepository, EmployeeRepository employeeRepository) {
         this.deptManagerRepository = deptManagerRepository;
         this.departmentRepository = departmentRepository;
+        this.employeeRepository = employeeRepository;
     }
 
     @GetMapping()
@@ -36,12 +39,30 @@ public class WebDept_ManagerController {
     }
 
     //Create
-//    @GetMapping("/createDeptManager")
-//    public String createDeptManager(Model model) {
-//        model.addAttribute("allDepartments", departmentRepository.findAll());
-//        model.addAttribute("deptManager", new DeptManager());
-//        return "dept_manager_files/createDeptManager";
-//    }
+    @GetMapping("/createForm")
+    public String createDeptManagerForm(Model model, String deptId) {
+        DeptManager deptManager = new DeptManager();
+        deptManager.setDeptNo(departmentRepository.findById(deptId).get());
+        DeptManagerId deptManagerId = new DeptManagerId();
+        deptManagerId.setDeptNo(deptId);
+        deptManager.setId(deptManagerId);
+        model.addAttribute("deptManagerToCreate", deptManager);
+        return "dept_manager_files/department-manager-create-form";
+    }
+
+    @PostMapping("/create")
+    public String saveDeptManager(@ModelAttribute("deptManagerToCreate") DeptManager deptManager, Model model,
+                                  RedirectAttributes redirectAttributes) {
+        deptManager.setEmpNo(employeeRepository.findById(deptManager.getId().getEmpNo()).get());
+        System.out.println(deptManager);
+        System.out.println(deptManager.getDeptNo());
+        System.out.println(deptManager.getEmpNo());
+        System.out.println(deptManager.getId());
+        deptManager.setDeptNo(departmentRepository.findById(deptManager.getId().getDeptNo()).get());
+        deptManagerRepository.saveAndFlush(deptManager);
+        redirectAttributes.addFlashAttribute("status", "Dept Manager successfully created");
+        return "redirect:/dept-manager/getDeptManagers?deptId=" + deptManager.getId().getDeptNo();
+    }
     //Read
 
     @GetMapping("/getDeptManagers")
