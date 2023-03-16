@@ -6,6 +6,7 @@ import com.sparta.mg.jpaproject.model.entities.SalaryId;
 import com.sparta.mg.jpaproject.model.repositories.EmployeeRepository;
 import com.sparta.mg.jpaproject.model.repositories.SalaryRepository;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -26,14 +27,16 @@ public class WebSalariesController {
         this.employeeRepository = employeeRepository;
     }
 
+    @PreAuthorize("hasRole('ROLE_UPDATE')")
     @GetMapping("/salary/create")
     public String createSalaryForm(@RequestParam("empNo") Integer empNo, Model model) {
         Salary salary = new Salary();
         salary.setEmpNo(employeeRepository.findById(empNo).orElse(null));
         model.addAttribute("salaryToCreate", salary);
-        return "SalariesPages/create-salary-form";
+        return "SalariesSubPages/create-salary-form";
     }
 
+    @PreAuthorize("hasRole('ROLE_UPDATE')")
     @PostMapping("/salary/save")
     public String save(@ModelAttribute("salaryToCreate") Salary salaryToCreate,
                        Model model,
@@ -46,12 +49,13 @@ public class WebSalariesController {
         return "redirect:/employee/salaries?empNo=" + employee.get().getId();
     }
 
-
+    @PreAuthorize("hasRole('ROLE_BASIC')")
     @GetMapping("/salary/search")
     public String getSalarySearchPage() {
-        return "SalariesPages/search-salaries-page";
+        return "SalariesSubPages/searchSalariesPage";
     }
 
+    @PreAuthorize("hasRole('ROLE_BASIC')")
     @GetMapping("/employee/salaries")
     public String getSalariesByEmpNo(Model model,
                                      @RequestParam Integer empNo) {
@@ -60,9 +64,10 @@ public class WebSalariesController {
             model.addAttribute("salaries", salaryRepository.findSalariesByEmpNo(emp1.get()));
             model.addAttribute("employeeNo", emp1.get().getId());
         }
-        return "SalariesPages/salaries";
+        return "SalariesSubPages/salaries";
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/salary/delete")
     public String deleteSalary(
             @RequestParam("emp_No") Integer emp_No,
@@ -76,6 +81,7 @@ public class WebSalariesController {
         return "redirect:/employee/salaries?empNo=" + emp_No;
     }
 
+    @PreAuthorize("hasRole('ROLE_UPDATE')")
     @GetMapping("/salary/edit")
     public String getEditSalary(@RequestParam("emp_No") Integer emp_No,
                                 @RequestParam("fromDate") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate fromDate, Model model){
@@ -84,9 +90,10 @@ public class WebSalariesController {
         salaryId.setFromDate(fromDate);
         Salary salary = salaryRepository.findById(salaryId).orElse(null);
         model.addAttribute("salaryToEdit", salary);
-        return "SalariesPages/salary-edit-form";
+        return "SalariesSubPages/salary-edit-form";
     }
 
+    @PreAuthorize("hasRole('ROLE_UPDATE')")
     @PostMapping("/update/salary")
         public String updateSalary(Salary salaryToEdit, RedirectAttributes redirectAttributes){
         salaryRepository.saveAndFlush(salaryToEdit);
