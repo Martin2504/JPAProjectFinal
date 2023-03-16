@@ -25,7 +25,8 @@ public class WebDept_ManagerController {
     }
 
     @GetMapping()
-    public String deptManagerHomepage() {
+    public String deptManagerSearch(Model model) {
+        model.addAttribute("allDepartments", departmentRepository.findAll());
         return "dept_manager_files/department_to_search";
     }
 
