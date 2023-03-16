@@ -26,7 +26,7 @@ public class WebDept_ManagerController {
 
     @GetMapping()
     public String deptManagerHomepage() {
-        return "dept_manager_files/dept_manager-homepage";
+        return "dept_manager_files/department_to_search";
     }
 
     //Create
