@@ -1,6 +1,8 @@
 package com.sparta.mg.jpaproject.controllers.webControllers;
 
 import com.sparta.mg.jpaproject.model.entities.Department;
+import com.sparta.mg.jpaproject.model.entities.DeptManager;
+import com.sparta.mg.jpaproject.model.entities.DeptManagerId;
 import com.sparta.mg.jpaproject.model.entities.Employee;
 import com.sparta.mg.jpaproject.model.repositories.DepartmentRepository;
 import com.sparta.mg.jpaproject.model.repositories.DeptManagerRepository;
@@ -57,9 +59,13 @@ public class WebDept_ManagerController {
     //Update
 
     @GetMapping("/updateDeptManager")
-    public String updateDeptManager(Model model) {
-        model.addAttribute("allDepartments", departmentRepository.findAll());
-        return "dept_manager_files/updateDeptManager";
+    public String updateDeptManager(Model model, @RequestParam String deptId, @RequestParam Integer emp_No) {
+        DeptManagerId deptManagerId = new DeptManagerId();
+        deptManagerId.setEmpNo(emp_No);
+        deptManagerId.setDeptNo(deptId);
+        DeptManager deptManager = deptManagerRepository.findById(deptManagerId).orElse(null);
+        model.addAttribute("deptManagerToEdit", deptManager);
+        return "dept_manager_files/department-manager-edit-form";
     }
 
     //Delete
