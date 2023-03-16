@@ -1,6 +1,7 @@
 package com.sparta.mg.jpaproject.controllers.webControllers;
 
-import com.sparta.mg.jpaproject.model.entities.DeptManager;
+import com.sparta.mg.jpaproject.model.entities.Department;
+import com.sparta.mg.jpaproject.model.entities.Employee;
 import com.sparta.mg.jpaproject.model.repositories.DepartmentRepository;
 import com.sparta.mg.jpaproject.model.repositories.DeptManagerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/dept-manager")
@@ -41,9 +44,14 @@ public class WebDept_ManagerController {
     //Read
 
     @GetMapping("/getDeptManagers")
-    public <deptId> String getDeptManager(RequestParam String deptId) {
-//        model.addAttribute("allDepartments", departmentRepository.findAll());
-        return "dept_manager_files/getDeptManager";
+    public String getDepartmentManagersByDeptId(Model model,
+                                     @RequestParam String deptId) {
+        Optional<Department> dept1 = departmentRepository.findById(deptId);
+        if (dept1.isPresent()) {
+            model.addAttribute("deptManagers", deptManagerRepository.getDeptManagersById_DeptNo(deptId));
+            model.addAttribute("deptId", dept1.get().getId());
+        }
+        return "dept_manager_files/departmentManagers";
     }
 
     //Update

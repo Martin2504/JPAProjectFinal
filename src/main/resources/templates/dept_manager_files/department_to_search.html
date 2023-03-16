@@ -6,10 +6,9 @@
 </head>
 <body>
 <h1>Search for Salaries by Employee ID</h1>
-<form th:action="@{/getDeptManagers}" method="get">
+<form th:action="@{/dept-manager/getDeptManagers}" method="get">
     <label for="deptId">Select Department</label>
-    <select class="form-control" id="deptId">
-        <option value="0">select option</option>
+    <select class="form-control" id="deptId" th:name="deptId">
         <option th:each="department : ${allDepartments}" th:value="${department.id}" th:text="${department.deptName}"></option>
     </select>
     <button type="submit">Search</button>
