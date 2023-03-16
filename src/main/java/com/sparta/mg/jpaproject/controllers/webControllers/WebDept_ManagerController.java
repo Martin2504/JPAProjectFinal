@@ -7,6 +7,7 @@ import com.sparta.mg.jpaproject.model.repositories.DepartmentRepository;
 import com.sparta.mg.jpaproject.model.repositories.DeptManagerRepository;
 import com.sparta.mg.jpaproject.model.repositories.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +19,6 @@ import java.util.Optional;
 @Controller
 @RequestMapping("/dept-manager")
 public class WebDept_ManagerController {
-    // Samir
 
     private final DeptManagerRepository deptManagerRepository;
 
@@ -40,6 +40,7 @@ public class WebDept_ManagerController {
     }
 
     //Create
+    @PreAuthorize("hasRole('ROLE_UPDATE')")
     @GetMapping("/createForm")
     public String createDeptManagerForm(Model model, String deptId) {
         DeptManager deptManager = new DeptManager();
@@ -51,6 +52,7 @@ public class WebDept_ManagerController {
         return "dept_manager_files/department-manager-create-form";
     }
 
+    @PreAuthorize("hasRole('ROLE_UPDATE')")
     @PostMapping("/create")
     public String saveDeptManager(@ModelAttribute("deptManagerToCreate") DeptManager deptManager, Model model,
                                   RedirectAttributes redirectAttributes) {
@@ -64,8 +66,9 @@ public class WebDept_ManagerController {
         redirectAttributes.addFlashAttribute("status", "Dept Manager successfully created");
         return "redirect:/dept-manager/getDeptManagers?deptId=" + deptManager.getId().getDeptNo();
     }
-    //Read
 
+    //Read
+    @PreAuthorize("hasRole('ROLE_BASIC')")
     @GetMapping("/getDeptManagers")
     public String getDepartmentManagersByDeptId(Model model,
                                      @RequestParam String deptId) {
@@ -78,7 +81,7 @@ public class WebDept_ManagerController {
     }
 
     //Update
-
+    @PreAuthorize("hasRole('ROLE_UPDATE')")
     @GetMapping("/editDeptManager")
     public String updateDeptManager(Model model, @RequestParam String deptId, @RequestParam Integer emp_No) {
         DeptManagerId deptManagerId = new DeptManagerId();
@@ -89,6 +92,7 @@ public class WebDept_ManagerController {
         return "dept_manager_files/department-manager-edit-form";
     }
 
+    @PreAuthorize("hasRole('ROLE_UPDATE')")
     @PostMapping("/update")
     public String updateDeptManager(@ModelAttribute("deptManagerToEdit") DeptManager deptManager, @RequestParam() Integer empId,RedirectAttributes redirectAttributes){
         deptManager.setEmpNo(employeeRepository.findById(empId).get());
@@ -101,6 +105,7 @@ public class WebDept_ManagerController {
     }
 
     //Delete
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/delete")
     public String deleteDeptManager(Model model, @RequestParam String deptId, @RequestParam Integer emp_No,
             RedirectAttributes redirectAttributes) {
