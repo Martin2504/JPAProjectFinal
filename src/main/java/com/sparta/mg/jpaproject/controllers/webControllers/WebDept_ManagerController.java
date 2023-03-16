@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.time.LocalDate;
 import java.util.Optional;
 
 @Controller
@@ -89,11 +90,12 @@ public class WebDept_ManagerController {
     }
 
     @PostMapping("/update")
-    public String updateDeptManager(@ModelAttribute("deptManagerToEdit") DeptManager deptManager, RedirectAttributes redirectAttributes){
-        deptManager.setEmpNo(employeeRepository.findById(deptManager.getId().getEmpNo()).get());
+    public String updateDeptManager(@ModelAttribute("deptManagerToEdit") DeptManager deptManager, @RequestParam() Integer empId,RedirectAttributes redirectAttributes){
+        deptManager.setEmpNo(employeeRepository.findById(empId).get());
         deptManager.setDeptNo(departmentRepository.findById(deptManager.getId().getDeptNo()).get());
         System.out.println(deptManager);
-        deptManagerRepository.saveAndFlush(deptManager);
+        deptManagerRepository.updateDeptManagerWithSameDepartment(deptManager.getFromDate(), deptManager.getToDate(),
+                deptManager.getEmpNo().getId(), deptManager.getDeptNo().getId(), deptManager.getId().getEmpNo());
         redirectAttributes.addFlashAttribute("status", "Salary successfully updated");
         return "redirect:/dept-manager/getDeptManagers?deptId=" + deptManager.getId().getDeptNo();
     }
