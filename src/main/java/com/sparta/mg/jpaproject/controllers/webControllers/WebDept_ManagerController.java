@@ -75,10 +75,15 @@ public class WebDept_ManagerController {
     }
 
     //Delete
-    @GetMapping("/delete")
-    public String deleteDeptManager(Model model) {
-        model.addAttribute("allDepartments", departmentRepository.findAll());
-        return "dept_manager_files/deleteDeptManager";
+    @PostMapping("/delete")
+    public String deleteDeptManager(Model model, @RequestParam String deptId, @RequestParam Integer emp_No,
+            RedirectAttributes redirectAttributes) {
+        DeptManagerId deptManagerId = new DeptManagerId();
+        deptManagerId.setEmpNo(emp_No);
+        deptManagerId.setDeptNo(deptId);
+        deptManagerRepository.deleteById(deptManagerId);
+        redirectAttributes.addFlashAttribute("status", "Salary successfully deleted");
+        return "redirect:/dept-manager/getDeptManagers?deptId=" + deptManagerId.getDeptNo();
     }
 
 }
