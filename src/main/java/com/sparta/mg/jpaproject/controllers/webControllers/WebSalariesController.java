@@ -49,7 +49,7 @@ public class WebSalariesController {
 
     @GetMapping("/salary/search")
     public String getSalarySearchPage() {
-        return "SalariesPages/searchSalariesPage";
+        return "SalariesPages/search-salaries-page";
     }
 
     @GetMapping("/employee/salaries")
