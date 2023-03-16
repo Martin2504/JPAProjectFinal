@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping("/dept-manager")
@@ -31,33 +32,33 @@ public class WebDept_ManagerController {
     }
 
     //Create
-    @GetMapping("/createDeptManager")
-    public String createDeptManager(Model model) {
-        model.addAttribute("allDepartments", departmentRepository.findAll());
-        model.addAttribute("deptManager", new DeptManager());
-        return "dept_manager_files/createDeptManager";
-    }
+//    @GetMapping("/createDeptManager")
+//    public String createDeptManager(Model model) {
+//        model.addAttribute("allDepartments", departmentRepository.findAll());
+//        model.addAttribute("deptManager", new DeptManager());
+//        return "dept_manager_files/createDeptManager";
+//    }
     //Read
 
-    @GetMapping("/getDeptManager")
-    public String getDeptManager(Model model) {
-        model.addAttribute("allDepartments", departmentRepository.findAll());
+    @GetMapping("/getDeptManagers")
+    public <deptId> String getDeptManager(RequestParam String deptId) {
+//        model.addAttribute("allDepartments", departmentRepository.findAll());
         return "dept_manager_files/getDeptManager";
     }
 
     //Update
 
-    @GetMapping("/updateDeptManager")
-    public String updateDeptManager(Model model) {
-        model.addAttribute("allDepartments", departmentRepository.findAll());
-        return "dept_manager_files/updateDeptManager";
-    }
+//    @GetMapping("/updateDeptManager")
+//    public String updateDeptManager(Model model) {
+//        model.addAttribute("allDepartments", departmentRepository.findAll());
+//        return "dept_manager_files/updateDeptManager";
+//    }
 
     //Delete
-    @GetMapping("/deleteDeptManager")
-    public String deleteDeptManager(Model model) {
-        model.addAttribute("allDepartments", departmentRepository.findAll());
-        return "dept_manager_files/deleteDeptManager";
-    }
+//    @GetMapping("/deleteDeptManager")
+//    public String deleteDeptManager(Model model) {
+//        model.addAttribute("allDepartments", departmentRepository.findAll());
+//        return "dept_manager_files/deleteDeptManager";
+//    }
 
 }

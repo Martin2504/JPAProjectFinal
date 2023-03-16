@@ -6,13 +6,19 @@
 </head>
 <body>
 <h1>Search for Salaries by Employee ID</h1>
-<form th:action="@{/getDeptManager}" method="get">
-    <label for="dropDownList">Select Department</label>
-    <select class="form-control" id="dropDownList">
+<form th:action="@{/getDeptManagers}" method="get">
+    <label for="deptId">Select Department</label>
+    <select class="form-control" id="deptId">
         <option value="0">select option</option>
         <option th:each="department : ${allDepartments}" th:value="${department.id}" th:text="${department.deptName}"></option>
     </select>
     <button type="submit">Search</button>
 </form>
+
+<!--<form action="/employee/salaries" method="get">-->
+<!--    <label for="empNo">Employee ID:</label>-->
+<!--    <input type="number" id="empNo" name="empNo">-->
+<!--    <button type="submit">Search</button>-->
+<!--</form>-->
 </body>
 </html>
