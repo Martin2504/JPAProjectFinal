@@ -5,7 +5,7 @@
     <title>Edit Department Manager</title>
 </head>
 <body>
-<form th:action="@{/dept-manager/edit}" th:object="${deptManagerToEdit}" method="post">
+<form th:action="@{/dept-manager/update}" th:object="${deptManagerToEdit}" method="post">
     <input type="hidden" th:field="*{id.deptNo}"/>
     <label for="Emp_No">Employer Number</label>
   <input type="text" id="Emp_No" th:field="*{id.empNo}"/>

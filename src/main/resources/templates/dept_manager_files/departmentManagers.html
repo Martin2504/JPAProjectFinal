@@ -26,7 +26,7 @@
         <td th:text="${deptManager.fromDate}"></td>
         <td th:text="${deptManager.toDate}"></td>
         <td>
-            <form method="get" th:action="@{/dept-manager/updateDeptManager}">
+            <form method="get" th:action="@{/dept-manager/editDeptManager}">
                 <input type="hidden" th:name="emp_No" th:value="${deptManager.id.empNo}"/>
                 <input type="hidden" th:name="deptId" th:value="${deptManager.id.deptNo}"/>
                 <button type="submit" class="btn btn-danger">Edit</button>
