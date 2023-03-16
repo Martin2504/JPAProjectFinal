@@ -56,17 +56,17 @@ public class WebDept_ManagerController {
 
     //Update
 
-//    @GetMapping("/updateDeptManager")
-//    public String updateDeptManager(Model model) {
-//        model.addAttribute("allDepartments", departmentRepository.findAll());
-//        return "dept_manager_files/updateDeptManager";
-//    }
+    @GetMapping("/updateDeptManager")
+    public String updateDeptManager(Model model) {
+        model.addAttribute("allDepartments", departmentRepository.findAll());
+        return "dept_manager_files/updateDeptManager";
+    }
 
     //Delete
-//    @GetMapping("/deleteDeptManager")
-//    public String deleteDeptManager(Model model) {
-//        model.addAttribute("allDepartments", departmentRepository.findAll());
-//        return "dept_manager_files/deleteDeptManager";
-//    }
+    @GetMapping("/delete")
+    public String deleteDeptManager(Model model) {
+        model.addAttribute("allDepartments", departmentRepository.findAll());
+        return "dept_manager_files/deleteDeptManager";
+    }
 
 }
