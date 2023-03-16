@@ -89,7 +89,10 @@ public class WebDept_ManagerController {
     }
 
     @PostMapping("/update")
-    public String updateSalary(@ModelAttribute("deptManagerToEdit") DeptManager deptManager, RedirectAttributes redirectAttributes){
+    public String updateDeptManager(@ModelAttribute("deptManagerToEdit") DeptManager deptManager, RedirectAttributes redirectAttributes){
+        deptManager.setEmpNo(employeeRepository.findById(deptManager.getId().getEmpNo()).get());
+        deptManager.setDeptNo(departmentRepository.findById(deptManager.getId().getDeptNo()).get());
+        System.out.println(deptManager);
         deptManagerRepository.saveAndFlush(deptManager);
         redirectAttributes.addFlashAttribute("status", "Salary successfully updated");
         return "redirect:/dept-manager/getDeptManagers?deptId=" + deptManager.getId().getDeptNo();

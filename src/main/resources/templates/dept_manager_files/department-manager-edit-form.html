@@ -7,7 +7,7 @@
 <body>
 <form th:action="@{/dept-manager/update}" th:object="${deptManagerToEdit}" method="post">
     <input type="hidden" th:field="*{id.deptNo}"/>
-    <label for="Emp_No">Employer Number</label>
+    <label for="Emp_No">Employee Number</label>
   <input type="text" id="Emp_No" th:field="*{id.empNo}"/>
   <label for="fromDate">FromDate:</label>
   <input type="text" id="fromDate" name="fromDate" th:field="*{fromDate}"/><br/>
