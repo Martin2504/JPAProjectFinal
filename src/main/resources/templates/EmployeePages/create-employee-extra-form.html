@@ -8,7 +8,7 @@
 </head>
 <body>
 <h1>Create Employee Extra</h1>
-<form th:action="@{/employee/saveExtra}" th:object="${employeeToCreate}" method="post">
+<form th:action="@{/employee/saveExtra}" th:object="${employeeToCreate}" method="get">
     <input type="hidden" th:field="*{id}"/>
     <label for="firstName">First Name:</label>
     <input type="text" id="firstName" name="firstName" th:field="*{firstName}"/><br/>
