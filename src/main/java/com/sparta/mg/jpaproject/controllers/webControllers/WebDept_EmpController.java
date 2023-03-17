@@ -7,6 +7,7 @@ import com.sparta.mg.jpaproject.model.repositories.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -33,6 +34,7 @@ public class WebDept_EmpController {
         this.employeeRepository = employeeRepository;
         this.departmentRepository = departmentRepository;
     }
+
 
     @PostMapping("deptemp/{emp}")
     public String setEmployeeDept( Model model,
@@ -66,12 +68,15 @@ public class WebDept_EmpController {
         return "dept_emp-page";
     }
 
+    @PreAuthorize("hasRole('ROLE_BASIC')")
     @GetMapping("/deptEmp/{deptNo}")
     public String getAllEmployeesOfDept(Model model, @PathVariable Integer deptNo) {
         Department dept = departmentRepository.findById(deptNo.toString()).orElse(null);
         model.addAttribute("deptEmps", deptEmpRepository.getEmployeesByDeptNo(String.valueOf(dept)));
-        return "DepartmentEmployeePages/departmentemployees";
+        return "DepartmentEmployeePages/emp_by_dept-page";
     }
+
+    @PreAuthorize("hasRole('ROLE_BASIC')")
     @GetMapping("/deptEmp/{empNo}")
     public String getDepartmentsByEmpNo(Model model, @PathVariable Integer empNo) {
 //        List<Department> deptEmp = deptEmpRepository.allDepartmentsOfEmployee(empNo);
@@ -81,6 +86,7 @@ public class WebDept_EmpController {
         return "DepartmentEmployeePages/depts_of_emp-page";
     }
 
+    @PreAuthorize("hasRole('ROLE_UPDATE')")
     @PatchMapping("deptemp/{empId}")
     public String updateEmployeeDept( Model model,
                                       @PathVariable Integer empId,
@@ -97,6 +103,7 @@ public class WebDept_EmpController {
         return "DepartmentEmployeePages/deptEmp-edit-form";
     }
 
+    @PreAuthorize("hasRole('ROLE_UPDATE')")
     @PostMapping("update/deptEmp")
     public String saveDeptEmp(DeptEmp updatedDeptEmp, RedirectAttributes redirectAttributes) {
         deptEmpRepository.saveAndFlush(updatedDeptEmp);
@@ -104,6 +111,7 @@ public class WebDept_EmpController {
         return "redirect:/deptEmp/{empNo}?empNo=" + updatedDeptEmp.getId().getEmpNo();
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/deptEmp/delete/{empNo}")
     public String deleteEmployeeDepartment(
             @PathVariable("empNo") Integer empNo,

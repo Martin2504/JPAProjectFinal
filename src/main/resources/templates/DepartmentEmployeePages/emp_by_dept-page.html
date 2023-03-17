@@ -19,12 +19,20 @@
         <td th:text="${deptEmp.lastName}"></td>
 
         <td>
-            <form method="post" th:action="@{}">
+            <form method="post" th:action="@{deptEmp/delete}">
                 <button type="submit">Delete</button>
+            </form>
+        </td>
+        <td>
+            <form method="get" th:action="@{deptEmp/empId}">
+                <input type="hidden" name="emp_No" th:value="${deptEmp.{empId}.empId}"/>
+                <input type="hidden" name="fromDate" th:value="${deptEmp.{empId}.fromDate}"/>
+                <input type="hidden" name="fromDate" th:value="${deptEmp.{empId}.toDate}"/>
+                <button type="submit" class="btn btn-danger">Edit</button>
             </form>
         </td>
     </tr>
     </tbody>
 </table><!--<div th:insert="fragments/footer"></div>--></body>
-</body>
+
 </html>
