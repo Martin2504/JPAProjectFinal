@@ -1,10 +1,15 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
 <body>
+<H1>Departments Employee Page</H1>
+<ul>
+    <li><a th:href="@{/deptEmp/create}">Create Dept-Emp connection</a> </li>  <br/>
+    <li><a th:href="@{/deptEmp/find}">Search for a Dept-Emp connection</a> </li>  <br/>
 
+</ul>
 </body>
 </html>

@@ -1,5 +1,6 @@
 package com.sparta.mg.jpaproject.model.repositories;
 
+import com.sparta.mg.jpaproject.model.entities.Department;
 import com.sparta.mg.jpaproject.model.entities.DeptEmp;
 import com.sparta.mg.jpaproject.model.entities.DeptEmpId;
 import com.sparta.mg.jpaproject.model.entities.Employee;
@@ -13,6 +14,7 @@ import org.springframework.data.repository.query.Param;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 public interface DeptEmpRepository extends JpaRepository<DeptEmp, DeptEmpId> {
     @Query(value = "SELECT DISTINCT e FROM Employee e WHERE e.id IN (SELECT " +
@@ -22,7 +24,16 @@ public interface DeptEmpRepository extends JpaRepository<DeptEmp, DeptEmpId> {
     @Query(value = "SELECT de.empNo FROM DeptEmp de WHERE de.id.deptNo = :deptNo")
     Page<Employee> getEmployeesByDeptNo(@Param("deptNo") String deptNo, Pageable page);
 
+    @Query(value = "SELECT de.empNo FROM DeptEmp de WHERE de.id.deptNo = :deptNo")
+    List<Employee> getEmployeesByDeptNo(@Param("deptNo") String deptNo);
+
     @Query(value = "SELECT Count(de) FROM DeptEmp de WHERE de.id.deptNo = :deptNo AND de.fromDate <= :beforeDate AND de.toDate >= :endDate")
     int getNoOfEmpsByDeptNoWithinTimePeriod(@Param("deptNo") String deptNo, LocalDate beforeDate, LocalDate endDate);
+
+    @Query(value = "SELECT de.deptNo " +
+            "FROM DeptEmp de " +
+            "WHERE de.id.empNo = :empNo")
+    List<Department> allDepartmentsOfEmployee(@Param("empNo") int empNo);
+
 
 }
