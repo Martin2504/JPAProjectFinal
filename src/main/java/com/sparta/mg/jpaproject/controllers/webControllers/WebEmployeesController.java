@@ -1,11 +1,9 @@
 package com.sparta.mg.jpaproject.controllers.webControllers;
 
 import com.sparta.mg.jpaproject.model.entities.Employee;
-import com.sparta.mg.jpaproject.model.entities.Salary;
-import com.sparta.mg.jpaproject.model.entities.SalaryId;
+import com.sparta.mg.jpaproject.model.repositories.DepartmentRepository;
 import com.sparta.mg.jpaproject.model.repositories.EmployeeRepository;
-import com.sparta.mg.jpaproject.model.repositories.SalaryRepository;
-import org.springframework.format.annotation.DateTimeFormat;
+import com.sparta.mg.jpaproject.model.repositories.TitleRepository;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,15 +13,20 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.time.LocalDate;
 import java.util.Optional;
 
 @Controller
 public class WebEmployeesController {
     private final EmployeeRepository employeeRepository;
 
-    public WebEmployeesController(EmployeeRepository employeeRepository) {
+    private final DepartmentRepository departmentRepository;
+
+    private final TitleRepository titleRepository;
+
+    public WebEmployeesController(EmployeeRepository employeeRepository, DepartmentRepository departmentRepository, TitleRepository titleRepository) {
         this.employeeRepository = employeeRepository;
+        this.departmentRepository = departmentRepository;
+        this.titleRepository = titleRepository;
     }
 
     @PreAuthorize("hasRole('ROLE_UPDATE')")
@@ -31,6 +34,15 @@ public class WebEmployeesController {
     public String getCreateEmployeeForm(Model model) {
         model.addAttribute("employeeToCreate", new Employee());
         return "EmployeePages/create-employee-form";
+    }
+
+    @PreAuthorize("hasRole('ROLE_UPDATE')")
+    @GetMapping("/employee/createExtra")
+    public String getCreateExtraEmployeeForm(Model model) {
+        model.addAttribute("employeeToCreate", new Employee());
+        model.addAttribute("allDepartments", departmentRepository.findAll());
+        System.out.println(titleRepository.getAllTitles());
+        return "EmployeePages/create-employee-extra-form";
     }
 
     @PreAuthorize("hasRole('ROLE_UPDATE')")
