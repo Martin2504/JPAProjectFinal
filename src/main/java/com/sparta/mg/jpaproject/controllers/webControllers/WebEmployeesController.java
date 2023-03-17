@@ -142,10 +142,10 @@ public class WebEmployeesController {
         model.addAttribute("deptId", deptId);
         model.addAttribute("salaryInput", salaryInput);
         System.out.println(deptId);
-        System.out.println(titleName);
-        System.out.println(titleInput);
+        System.out.println("SHOW ME titleName: " + titleName);
+        System.out.println("SHOW ME titleInput: " + titleInput);
         System.out.println(salaryInput);
-        if (titleName == "Other") {
+        if (titleName.equals("Other")) {
             model.addAttribute("titleValue", titleInput);
         } else {
             model.addAttribute("titleValue", titleName);
