@@ -32,7 +32,7 @@ public class WebDept_ManagerController {
         this.departmentRepository = departmentRepository;
         this.employeeRepository = employeeRepository;
     }
-
+    @PreAuthorize("hasRole('ROLE_BASIC')")
     @GetMapping()
     public String deptManagerSearch(Model model) {
         model.addAttribute("allDepartments", departmentRepository.findAll());
