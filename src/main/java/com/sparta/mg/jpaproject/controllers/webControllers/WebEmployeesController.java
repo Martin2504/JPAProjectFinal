@@ -7,15 +7,15 @@ import com.sparta.mg.jpaproject.model.repositories.TitleRepository;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.List;
 import java.util.Optional;
 
 @Controller
+@SessionAttributes({"employeeToCreateExtra", "deptId",
+        "titleName", "titleInput", "salaryInput", "titleValue"})
 public class WebEmployeesController {
     private final EmployeeRepository employeeRepository;
 
@@ -27,6 +27,11 @@ public class WebEmployeesController {
         this.employeeRepository = employeeRepository;
         this.departmentRepository = departmentRepository;
         this.titleRepository = titleRepository;
+    }
+
+    @ModelAttribute("employeeToCreateExtra")
+    public Employee employeeToCreateExtra() {
+        return new Employee();
     }
 
     @PreAuthorize("hasRole('ROLE_UPDATE')")
@@ -41,7 +46,9 @@ public class WebEmployeesController {
     public String getCreateExtraEmployeeForm(Model model) {
         model.addAttribute("employeeToCreate", new Employee());
         model.addAttribute("allDepartments", departmentRepository.findAll());
-        System.out.println(titleRepository.getAllTitles());
+        List<String> allTitles = titleRepository.getAllTitles();
+        allTitles.add("Other");
+        model.addAttribute("allTitles",allTitles);
         return "EmployeePages/create-employee-extra-form";
     }
 
@@ -53,6 +60,32 @@ public class WebEmployeesController {
         employeeRepository.save(employeeToCreate);
         redirectAttributes.addFlashAttribute("status", "Employee successfully created");
         return "redirect:/employee?empNo=" + employeeToCreate.getId();
+    }
+
+    @PreAuthorize("hasRole('ROLE_UPDATE')")
+    @PostMapping("/employee/saveExtra")
+    public String saveExtra(@ModelAttribute("employeeToCreateExtra") Employee employeeToCreate,
+                       @ModelAttribute("deptId") String deptId,
+                            @ModelAttribute("titleName") String titleName,
+                            @ModelAttribute("titleInput") String titleInput,
+                            @ModelAttribute("salaryInput") Integer salaryInput,
+                            Model model,
+                       RedirectAttributes redirectAttributes) {
+        System.out.println(employeeToCreate);
+        System.out.println(deptId);
+        System.out.println(titleName);
+        System.out.println(titleInput);
+        System.out.println(salaryInput);
+        if (titleName == "Other") {
+            model.addAttribute("titleValue", titleInput);
+        } else {
+            model.addAttribute("titleValue", titleName);
+        }
+
+        model.addAttribute("deptName", departmentRepository.findById(deptId).get().getDeptName());
+//        employeeRepository.save(employeeToCreate);
+//        redirectAttributes.addFlashAttribute("status", "Employee successfully created");
+        return "/EmployeePages/create-employee-extra-confirmation";
     }
 
     @PreAuthorize("hasRole('ROLE_BASIC')")
