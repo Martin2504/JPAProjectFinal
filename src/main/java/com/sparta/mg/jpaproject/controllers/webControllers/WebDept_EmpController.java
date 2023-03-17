@@ -70,7 +70,7 @@ public class WebDept_EmpController {
     public String getAllEmployeesOfDept(Model model, @PathVariable Integer deptNo) {
         Department dept = departmentRepository.findById(deptNo.toString()).orElse(null);
         model.addAttribute("deptEmps", deptEmpRepository.getEmployeesByDeptNo(String.valueOf(dept)));
-        return "DepartmentEmployeePages/emp_by_dept-page";
+        return "DepartmentEmployeePages/departmentemployees";
     }
     @GetMapping("/deptEmp/{empNo}")
     public String getDepartmentsByEmpNo(Model model, @PathVariable Integer empNo) {
@@ -94,7 +94,7 @@ public class WebDept_EmpController {
         deptEmp.setToDate(toDate);
 
         model.addAttribute("updatedDeptEmp", deptEmp);
-        return "DepartmentEmployeePages/success-page";
+        return "DepartmentEmployeePages/deptEmp-edit-form";
     }
 
     @PostMapping("update/deptEmp")
@@ -104,9 +104,9 @@ public class WebDept_EmpController {
         return "redirect:/deptEmp/{empNo}?empNo=" + updatedDeptEmp.getId().getEmpNo();
     }
 
-    @PostMapping("/deptEmp/delete")
+    @PostMapping("/deptEmp/delete/{empNo}")
     public String deleteEmployeeDepartment(
-            @RequestParam("empNo") Integer empNo,
+            @PathVariable("empNo") Integer empNo,
             @RequestParam("deptNo") String deptNo,
             @RequestParam("fromDate") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate fromDate,
             @RequestParam("toDate") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate toDate,
