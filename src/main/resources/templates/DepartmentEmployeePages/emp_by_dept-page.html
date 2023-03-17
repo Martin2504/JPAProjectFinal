@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<table class = "table">
+    <thead>
+    <tr>
+        <th>Employee Number</th>
+
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="deptEmp : ${deptEmps}">
+        <td th:text="${deptEmp.id}"></td>
+        <td th:text="${deptEmp.firstName}"></td>
+        <td th:text="${deptEmp.lastName}"></td>
+
+        <td>
+            <form method="post" th:action="@{}">
+                <button type="submit">Delete</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table><!--<div th:insert="fragments/footer"></div>--></body>
+</body>
+</html>
