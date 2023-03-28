@@ -6,6 +6,15 @@ body {
     text-align: center;
 }
 
+h1 {
+    color: red;
+    text-align: center;
+    font-size: 50px;
+    font-family: Arial, sans-serif;
+    margin-top: 100px;
+    background-color: darkgrey;
+}
+
 ul {
     list-style-type: none;
     margin-top: 50px;
